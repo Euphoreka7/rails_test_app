@@ -23,7 +23,7 @@ ExperimentOption.create(experiment: experiment, value: "50", percentage: 5)
 ExperimentOption.create(experiment: experiment, value: "5", percentage: 10)
 
 # it can be done by some sort of bulk insert. but seeds were never a target for perf improvements
-1.upto(1_000_000) do
+1.upto(50_000) do
   client = Client.find_or_create_by(device_token: SecureRandom.uuid)
   ClientSettings::PopulateService.execute(client)
 end
