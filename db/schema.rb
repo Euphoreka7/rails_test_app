@@ -11,10 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_08_03_045307) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "client_settings", force: :cascade do |t|
-    t.integer "client_id", null: false
-    t.integer "experiment_id", null: false
-    t.integer "experiment_option_id", null: false
+    t.bigint "client_id", null: false
+    t.bigint "experiment_id", null: false
+    t.bigint "experiment_option_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id", "experiment_id"], name: "index_client_settings_on_client_id_and_experiment_id", unique: true
@@ -32,7 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_045307) do
   create_table "experiment_options", force: :cascade do |t|
     t.string "value", null: false
     t.float "percentage", null: false
-    t.integer "experiment_id", null: false
+    t.bigint "experiment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["experiment_id", "value"], name: "index_experiment_options_on_experiment_id_and_value", unique: true
