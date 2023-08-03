@@ -1,0 +1,23 @@
+h1 Statistics
+
+- @statistics.each do |experiment_name, options|
+  - clients_count = options.map { |o| o['clients_count'] }.sum
+  h2= experiment_name
+  h4
+    ' Users:
+    = clients_count
+
+  table
+    tbody
+      - options.each do |option|
+        - percentage = (option['clients_count'] * 100.0 / clients_count).round(2)
+        tr
+          td= option['value']
+          td= "#{option['clients_count']} (#{percentage}%)"
+
+/ i know it's not the best place for css
+css:
+  table, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
