@@ -49,6 +49,24 @@ describe Api::V1::ExperimentsController do
       end
     end
 
+    context "with many customers" do
+      it "creates corresponding count of price values" do
+        settings = Array.new(100) do
+          request.headers.merge!("Device-Token" => SecureRandom.uuid); get :index; JSON.parse(response.body)
+        end
+        result = settings.group_by{|resp| resp["price"]}.transform_values(&:size)
+        expect(result).to be_eql({"10"=> 75, "20" => 10, "50" => 5, "5"=> 10})
+      end
+
+      it "creates corresponding count of button_color values" do
+        settings = Array.new(99) do
+          request.headers.merge!("Device-Token" => SecureRandom.uuid); get :index; JSON.parse(response.body)
+        end
+        result = settings.group_by{|resp| resp["button_color"]}.transform_values(&:size)
+        expect(result).to be_eql({'#FF0000'=> 33, '#00FF00' => 33, '#0000FF' => 33})
+      end
+    end
+
     context "with existing client settings" do
       let!(:client) { create(:client, device_token: device_token) }
       let!(:client_settings) { create(:client_setting, client: client, experiment: experiment_1, experiment_option: experiment_1_option2) }
