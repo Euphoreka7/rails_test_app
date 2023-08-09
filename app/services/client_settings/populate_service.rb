@@ -12,7 +12,7 @@ module ClientSettings
         .as_json
         .group_by{|eo| eo['experiment_id']}
         .each do |experiment_id, options|
-          option_id = options.map { |o| [o['option_id'], o['options_count'] / o['percentage']] }.sort_by{ |o| o[1] }[0][0]
+          option_id = options.min_by { |o| o['options_count'] / o['percentage'] }['option_id']
           client.client_settings.create(experiment_id: experiment_id, experiment_option_id: option_id)
       end
     end
